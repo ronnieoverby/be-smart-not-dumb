@@ -18,9 +18,12 @@ var userInput = @"
 "
 .Dump("The nefarious original input.");
 
+
 // Oh no! There's HTML and a terrible life threatening script!
 // if this script somehow gets executed, life as we know it will end
 // what can be done?!
+
+ShowDemoLink("Click here to experience the full wrath of the unencoded HTML. Don't worry; you won't actually be harmed.", userInput);
 
 // HTML ENCODING TO THE RESCUE!
 // Before this input ever has the chance of being rendered by a
@@ -31,6 +34,8 @@ string safelyEncodedHtml = System.Net.WebUtility.HtmlEncode(userInput)
 
 // now that the world has been delivered by HTML Encoding,
 // we can safely render it in the browser.
+
+ShowDemoLink("Click here to experience saving grace of the encoded HTML",safelyEncodedHtml);
 
 // RUN THIS SCRIPT FOR A DEMONSTRATION!
 
@@ -45,8 +50,9 @@ string safelyEncodedHtml = System.Net.WebUtility.HtmlEncode(userInput)
 // The code below is supporting code
 // Feel free to read, but it's not relevant to the topic
 
-new Hyperlinq(() => DemonstrateInWebBrowser(userInput), "Click here to experience the full wrath of the unencoded HTML").Dump();
-new Hyperlinq(() => DemonstrateInWebBrowser(safelyEncodedHtml), "Click here to experience saving grace of the encoded HTML").Dump();
+
+void ShowDemoLink(string title, string code) =>
+	new Hyperlinq(() => DemonstrateInWebBrowser(code), title).Dump();
 
 void DemonstrateInWebBrowser(string code)
 {
@@ -54,7 +60,7 @@ void DemonstrateInWebBrowser(string code)
 
 	var html = $@"
 	<html>
-		<head><title>{Util.CurrentQueryPath}</title></head>
+		<head><title>{Path.GetFileName( Util.CurrentQueryPath )}</title></head>
 		<body>
 			{code}
 		</body>
